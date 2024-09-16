@@ -1,3 +1,4 @@
+import 'package:alhijra/constants.dart';
 import 'package:flutter/material.dart';
 
 // Assuming you have a color.dart file for defining theme colors
@@ -8,8 +9,8 @@ class BottomBarItem extends StatelessWidget {
     this.icon, {
     super.key, 
     this.onTap,
-    this.color = inActiveColor,
-    this.activeColor = primary,
+    this.color = whiteColor,
+    this.activeColor =blue,
     this.isActive = false,
     this.isNotified = false,
   });
@@ -64,7 +65,7 @@ class BottomBarItem extends StatelessWidget {
             child: Icon(
               Icons.brightness_1,
               size: 10.0,
-              color: Colors.red,
+              color: Colors.blue,
             ),
           ),
         )

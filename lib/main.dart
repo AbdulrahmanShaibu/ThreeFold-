@@ -3,6 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'pages/root.dart';
 import 'theme/color.dart';
 
+// flutter run -d chrome --web-renderer html
+
 void main() {
   runApp(const MyApp());
 }
