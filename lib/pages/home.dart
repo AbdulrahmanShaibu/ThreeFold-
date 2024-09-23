@@ -3,6 +3,7 @@ import 'package:alhijra/widgets/hotels.dart';
 import 'package:alhijra/widgets/rester.dart';
 import 'package:alhijra/widgets/tour.dart';
 import 'package:flutter/material.dart';
+// ignore: unused_import
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 void main() {
@@ -47,6 +48,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool selectedCategory = false;
+  String searchText = '';
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +73,7 @@ class _HomePageState extends State<HomePage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            "Znzibar Tour App",
+            "Zanzibar Tour App",
             style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.bold,
@@ -105,17 +107,13 @@ class _HomePageState extends State<HomePage> {
           const SizedBox(height: 25),
           _buildCategories(),
           const SizedBox(height: 25),
-          _buildAdsImage(
-              "https://images.pexels.com/photos/410648/pexels-photo-410648.jpeg?auto=compress&cs=tinysrgb&w=400"),
+          _buildAdsImage("https://images.pexels.com/photos/410648/pexels-photo-410648.jpeg?auto=compress&cs=tinysrgb&w=400"),
           const SizedBox(height: 25),
-          _buildTourImage(
-              "https://images.pexels.com/photos/164336/pexels-photo-164336.jpeg?auto=compress&cs=tinysrgb&w=400"),
+          _buildTourImage("https://images.pexels.com/photos/164336/pexels-photo-164336.jpeg?auto=compress&cs=tinysrgb&w=400"),
           const SizedBox(height: 25),
-          _buildHotelImage(
-              "https://images.pexels.com/photos/342800/pexels-photo-342800.jpeg?auto=compress&cs=tinysrgb&w=400"),
+          _buildHotelImage("https://images.pexels.com/photos/342800/pexels-photo-342800.jpeg?auto=compress&cs=tinysrgb&w=400"),
           const SizedBox(height: 20),
-          _builResterImage(
-              "https://images.pexels.com/photos/2097090/pexels-photo-2097090.jpeg?auto=compress&cs=tinysrgb&w=400"),
+          _builResterImage("https://images.pexels.com/photos/2097090/pexels-photo-2097090.jpeg?auto=compress&cs=tinysrgb&w=400"),
           const SizedBox(height: 20),
           _buildSectionTitle("Popular Places"),
           const SizedBox(height: 5),
@@ -131,9 +129,14 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildSearch() {
-    return const Padding(
-      padding: EdgeInsets.symmetric(horizontal: 15),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15),
       child: TextField(
+        onChanged: (value) {
+          setState(() {
+            searchText = value;
+          });
+        },
         decoration: InputDecoration(
           hintText: "Search tours, hotels, restaurants...",
           prefixIcon: Icon(Icons.search, color: Colors.grey),
@@ -146,7 +149,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-// for food order
+  // for food order
   Widget _buildAdsImage(String imageUrl) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 15),
@@ -176,8 +179,7 @@ class _HomePageState extends State<HomePage> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 elevation: 5,
               ),
               child: const Text(
@@ -194,7 +196,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-// for tour
+  // for tour
   Widget _buildTourImage(String imageUrl) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 15),
@@ -224,8 +226,7 @@ class _HomePageState extends State<HomePage> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 elevation: 5,
               ),
               child: const Text(
@@ -242,7 +243,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-// for hotel
+  // for hotel
   Widget _buildHotelImage(String imageUrl) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 15),
@@ -272,8 +273,7 @@ class _HomePageState extends State<HomePage> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 elevation: 5,
               ),
               child: const Text(
@@ -320,8 +320,7 @@ class _HomePageState extends State<HomePage> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 elevation: 5,
               ),
               child: const Text(
@@ -339,180 +338,45 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildCategories() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      padding: const EdgeInsets.only(bottom: 5, left: 15),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          _buildCategoryItem("All", FontAwesomeIcons.th, true),
-          _buildCategoryItem("Food", FontAwesomeIcons.utensils, false),
-          _buildCategoryItem("Tours", FontAwesomeIcons.route, false),
-          _buildCategoryItem("Hotels", FontAwesomeIcons.hotel, false),
-          _buildCategoryItem(
-              "Restaurants", FontAwesomeIcons.wineGlassAlt, false),
+          _buildCategoryButton("Food", () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const FoodMenuPage()),
+            );
+          }),
+          _buildCategoryButton("Hotels", () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const HotelPage()),
+            );
+          }),
+          _buildCategoryButton("Tours", () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const TourMenuPage()),
+            );
+          }),
         ],
       ),
     );
   }
 
-  Widget _buildCategoryItem(String name, IconData icon, bool selected) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          selectedCategory = !selectedCategory;
-        });
-      },
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        margin: const EdgeInsets.only(right: 10),
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-        decoration: BoxDecoration(
-          color: selected ? Colors.blueAccent : Colors.grey[200],
+  Widget _buildCategoryButton(String title, VoidCallback onPressed) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.blueAccent,
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            if (selected)
-              BoxShadow(
-                color: Colors.blue.withOpacity(0.4),
-                blurRadius: 10,
-                spreadRadius: 2,
-              ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Icon(icon, color: selected ? Colors.white : Colors.black),
-            const SizedBox(width: 5),
-            Text(
-              name,
-              style: TextStyle(
-                color: selected ? Colors.white : Colors.black,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
         ),
       ),
-    );
-  }
-
-  Widget _buildPopulars() {
-    return SizedBox(
-      height: 160, // Set a fixed height for the slideshow
-      child: PageView(
-        scrollDirection: Axis.horizontal,
-        children: [
-          _buildPopularItem(
-            "Nungwi Beach",
-            "https://images.pexels.com/photos/1699574/pexels-photo-1699574.jpeg?auto=compress&cs=tinysrgb&w=400",
-          ),
-          _buildPopularItem(
-            "Stone Town",
-            "https://images.pexels.com/photos/4319885/pexels-photo-4319885.jpeg?auto=compress&cs=tinysrgb&w=400",
-          ),
-          _buildPopularItem(
-            "Jozani Forest",
-            "https://images.pexels.com/photos/1231232/pexels-photo-1231232.jpeg?auto=compress&cs=tinysrgb&w=400",
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildPopularItem(String name, String imageUrl) {
-    return Container(
-      margin: const EdgeInsets.only(right: 15),
-      width: 120,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            height: 100,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: NetworkImage(imageUrl),
-              ),
-            ),
-          ),
-          const SizedBox(height: 5),
-          Text(
-            name,
-            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildFeatured() {
-    return Column(
-      children: [
-        _buildFeaturedItem(
-            "Park Hyatt Zanzibar",
-            "https://images.pexels.com/photos/261186/pexels-photo-261186.jpeg?auto=compress&cs=tinysrgb&w=400",
-            4.5),
-        _buildFeaturedItem(
-            "The Residence Zanzibar",
-            "https://images.pexels.com/photos/4321464/pexels-photo-4321464.jpeg?auto=compress&cs=tinysrgb&w=400",
-            4.2),
-      ],
-    );
-  }
-
-  Widget _buildFeaturedItem(String name, String imageUrl, double rating) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 15),
-      height: 120,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        image: DecorationImage(
-          fit: BoxFit.cover,
-          image: NetworkImage(imageUrl),
-        ),
-      ),
-      child: Stack(
-        children: [
-          Positioned(
-            top: 10,
-            left: 10,
-            child: Row(
-              children: List.generate(5, (index) {
-                return Icon(
-                  index < rating ? Icons.star : Icons.star_border,
-                  color: Colors.yellow[700],
-                  size: 18,
-                );
-              }),
-            ),
-          ),
-          Positioned(
-            bottom: 10,
-            right: 10,
-            child: ElevatedButton(
-              onPressed: () {
-                // Add your action here
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blueAccent,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                elevation: 5,
-              ),
-              child: const Text(
-                'Book Now',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
+      child: Text(title, style: const TextStyle(fontSize: 16)),
     );
   }
 
@@ -521,16 +385,61 @@ class _HomePageState extends State<HomePage> {
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Text(
         title,
-        style: const TextStyle(
-            fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
+  Widget _buildPopulars() {
+    return SizedBox(
+      height: 150,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        children: List.generate(5, (index) {
+          return Card(
+            margin: const EdgeInsets.symmetric(horizontal: 5),
+            child: SizedBox(
+              width: 100,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.place, size: 40, color: Colors.blueAccent),
+                  Text("Place ${index + 1}"),
+                ],
+              ),
+            ),
+          );
+        }),
+      ),
+    );
+  }
+
+  Widget _buildFeatured() {
+    return SizedBox(
+      height: 150,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        children: List.generate(5, (index) {
+          return Card(
+            margin: const EdgeInsets.symmetric(horizontal: 5),
+            child: SizedBox(
+              width: 100,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.hotel, size: 40, color: Colors.blueAccent),
+                  Text("Hotel ${index + 1}"),
+                ],
+              ),
+            ),
+          );
+        }),
       ),
     );
   }
 
   Future<void> _refreshContent() async {
-    // Add logic to refresh data from server or local storage
-    setState(() {
-      // Refresh the UI
-    });
+    // Implement your refresh logic here
+    await Future.delayed(const Duration(seconds: 1));
   }
 }

@@ -112,6 +112,7 @@ class _FoodMenuPageState extends State<FoodMenuPage> {
           _buildSearchBar(),
           _buildCategoryFilter(),
           Expanded(child: _buildFilteredMenu()),
+          _buildLoginButton(),
         ],
       ),
     );
@@ -261,6 +262,16 @@ class _FoodMenuPageState extends State<FoodMenuPage> {
     );
   }
 
+  Widget _buildLoginButton() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ElevatedButton(
+        onPressed: () => _showLoginDialog(context),
+        child: Text(_isLoggedIn ? 'Logout' : 'Login'),
+      ),
+    );
+  }
+
   void _openOrderForm(BuildContext context, String itemTitle) {
     showDialog(
       context: context,
@@ -293,22 +304,18 @@ class _FoodMenuPageState extends State<FoodMenuPage> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Your Orders'),
-          content: _orders.isEmpty
-              ? const Text('You have not ordered anything yet.')
-              : Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: _orders.map((order) {
-                    return ListTile(
-                      title: Text(order.item),
-                      subtitle: Text('Quantity: ${order.quantity}'),
-                    );
-                  }).toList(),
-                ),
+          content: SingleChildScrollView(
+            child: Column(
+              children: _orders.map((order) {
+                return ListTile(
+                  title: Text(order.itemTitle),
+                );
+              }).toList(),
+            ),
+          ),
           actions: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
               child: const Text('Close'),
             ),
           ],
@@ -323,18 +330,16 @@ class _FoodMenuPageState extends State<FoodMenuPage> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Login Required'),
-          content: const Text(
-              'Please log in to continue. Do you want to log in or sign up now?'),
+          content: const Text('Please log in to place an order.'),
           actions: [
-            ElevatedButton(
+            TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                // Implement login/signup logic here
-                _redirectToLogin(context);
+                _showLoginDialog(context);
               },
-              child: const Text('Log In / Sign Up'),
+              child: const Text('Login'),
             ),
-            ElevatedButton(
+            TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -346,55 +351,106 @@ class _FoodMenuPageState extends State<FoodMenuPage> {
     );
   }
 
-  void _redirectToLogin(BuildContext context) {
-    // Implement redirection to the login page
-    print('Redirecting to login/signup...');
-    // You can navigate to the login page here
+  void _showLoginDialog(BuildContext context) {
+    final _usernameController = TextEditingController();
+    final _passwordController = TextEditingController();
+    final _signupUsernameController = TextEditingController();
+    final _signupPasswordController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Login or Signup'),
+          content: SingleChildScrollView(
+            child: Column(
+              children: [
+                TextField(
+                  controller: _usernameController,
+                  decoration: const InputDecoration(
+                    labelText: 'Username',
+                  ),
+                ),
+                TextField(
+                  controller: _passwordController,
+                  decoration: const InputDecoration(
+                    labelText: 'Password',
+                    hintText: 'Enter your password',
+                  ),
+                  obscureText: true,
+                ),
+                const SizedBox(height: 20),
+                TextField(
+                  controller: _signupUsernameController,
+                  decoration: const InputDecoration(
+                    labelText: 'Signup Username',
+                  ),
+                ),
+                TextField(
+                  controller: _signupPasswordController,
+                  decoration: const InputDecoration(
+                    labelText: 'Signup Password',
+                    hintText: 'Choose a password',
+                  ),
+                  obscureText: true,
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                if (_usernameController.text.isNotEmpty &&
+                    _passwordController.text.isNotEmpty) {
+                  // Perform login logic
+                  setState(() {
+                    _isLoggedIn = true;
+                  });
+                  Navigator.of(context).pop();
+                }
+              },
+              child: const Text('Login'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                if (_signupUsernameController.text.isNotEmpty &&
+                    _signupPasswordController.text.isNotEmpty) {
+                  // Perform signup logic
+                  setState(() {
+                    _isLoggedIn = true; // Automatically log in after signup
+                  });
+                  Navigator.of(context).pop();
+                }
+              },
+              child: const Text('Signup'),
+            ),
+          ],
+        );
+      },
+    );
   }
 }
 
-class OrderForm extends StatefulWidget {
+class OrderForm extends StatelessWidget {
   final String itemTitle;
 
-  const OrderForm({super.key, required this.itemTitle});
-
-  @override
-  _OrderFormState createState() => _OrderFormState();
-}
-
-class _OrderFormState extends State<OrderForm> {
-  final TextEditingController _quantityController = TextEditingController();
+  const OrderForm({Key? key, required this.itemTitle}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        TextFormField(
-          controller: _quantityController,
-          decoration: const InputDecoration(labelText: 'Quantity'),
-          keyboardType: TextInputType.number,
-        ),
-        ElevatedButton(
-          onPressed: () {
-            final quantity = int.tryParse(_quantityController.text);
-            if (quantity != null) {
-              Navigator.of(context).pop(Order(
-                item: widget.itemTitle,
-                quantity: quantity,
-              ));
-            }
-          },
-          child: const Text('Submit Order'),
-        ),
+        Text('Order for: $itemTitle'),
+        const SizedBox(height: 10),
+        // Add any additional fields for the order form here
       ],
     );
   }
 }
 
 class Order {
-  final String item;
-  final int quantity;
+  final String itemTitle;
 
-  Order({required this.item, required this.quantity});
+  Order(this.itemTitle);
 }
