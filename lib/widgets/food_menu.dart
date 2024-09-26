@@ -21,13 +21,14 @@ class FoodMenuPage extends StatefulWidget {
   const FoodMenuPage({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _FoodMenuPageState createState() => _FoodMenuPageState();
 }
 
 class _FoodMenuPageState extends State<FoodMenuPage> {
   String _searchQuery = '';
   String _selectedCategory = 'All';
-  List<Order> _orders = [];
+  final List<Order> _orders = [];
   bool _isLoggedIn = false; // Track login status
 
   // Categories for filtering
@@ -352,10 +353,10 @@ class _FoodMenuPageState extends State<FoodMenuPage> {
   }
 
   void _showLoginDialog(BuildContext context) {
-    final _usernameController = TextEditingController();
-    final _passwordController = TextEditingController();
-    final _signupUsernameController = TextEditingController();
-    final _signupPasswordController = TextEditingController();
+    final usernameController = TextEditingController();
+    final passwordController = TextEditingController();
+    final signupUsernameController = TextEditingController();
+    final signupPasswordController = TextEditingController();
 
     showDialog(
       context: context,
@@ -366,13 +367,13 @@ class _FoodMenuPageState extends State<FoodMenuPage> {
             child: Column(
               children: [
                 TextField(
-                  controller: _usernameController,
+                  controller: usernameController,
                   decoration: const InputDecoration(
                     labelText: 'Username',
                   ),
                 ),
                 TextField(
-                  controller: _passwordController,
+                  controller: passwordController,
                   decoration: const InputDecoration(
                     labelText: 'Password',
                     hintText: 'Enter your password',
@@ -381,13 +382,13 @@ class _FoodMenuPageState extends State<FoodMenuPage> {
                 ),
                 const SizedBox(height: 20),
                 TextField(
-                  controller: _signupUsernameController,
+                  controller: signupUsernameController,
                   decoration: const InputDecoration(
                     labelText: 'Signup Username',
                   ),
                 ),
                 TextField(
-                  controller: _signupPasswordController,
+                  controller: signupPasswordController,
                   decoration: const InputDecoration(
                     labelText: 'Signup Password',
                     hintText: 'Choose a password',
@@ -400,8 +401,8 @@ class _FoodMenuPageState extends State<FoodMenuPage> {
           actions: [
             ElevatedButton(
               onPressed: () {
-                if (_usernameController.text.isNotEmpty &&
-                    _passwordController.text.isNotEmpty) {
+                if (usernameController.text.isNotEmpty &&
+                    passwordController.text.isNotEmpty) {
                   // Perform login logic
                   setState(() {
                     _isLoggedIn = true;
@@ -413,8 +414,8 @@ class _FoodMenuPageState extends State<FoodMenuPage> {
             ),
             ElevatedButton(
               onPressed: () {
-                if (_signupUsernameController.text.isNotEmpty &&
-                    _signupPasswordController.text.isNotEmpty) {
+                if (signupUsernameController.text.isNotEmpty &&
+                    signupPasswordController.text.isNotEmpty) {
                   // Perform signup logic
                   setState(() {
                     _isLoggedIn = true; // Automatically log in after signup
@@ -434,7 +435,7 @@ class _FoodMenuPageState extends State<FoodMenuPage> {
 class OrderForm extends StatelessWidget {
   final String itemTitle;
 
-  const OrderForm({Key? key, required this.itemTitle}) : super(key: key);
+  const OrderForm({super.key, required this.itemTitle});
 
   @override
   Widget build(BuildContext context) {

@@ -12,7 +12,6 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -43,6 +42,7 @@ class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _HomePageState createState() => _HomePageState();
 }
 
@@ -97,23 +97,27 @@ class _HomePageState extends State<HomePage> {
         children: [
           const Padding(
             padding: EdgeInsets.all(15),
-            child: Text(
-              "Explore Zanzibar",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
+            // child: Text(
+            //   "Explore Zanzibar",
+            //   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            // ),
           ),
-          const SizedBox(height: 10),
-          _buildSearch(),
           const SizedBox(height: 25),
           _buildCategories(),
+           const SizedBox(height: 10),
+          _buildSearch(),
           const SizedBox(height: 25),
-          _buildAdsImage("https://images.pexels.com/photos/410648/pexels-photo-410648.jpeg?auto=compress&cs=tinysrgb&w=400"),
+          _buildAdsImage(
+              "https://images.pexels.com/photos/410648/pexels-photo-410648.jpeg?auto=compress&cs=tinysrgb&w=400"),
           const SizedBox(height: 25),
-          _buildTourImage("https://images.pexels.com/photos/164336/pexels-photo-164336.jpeg?auto=compress&cs=tinysrgb&w=400"),
+          _buildTourImage(
+              "https://images.pexels.com/photos/164336/pexels-photo-164336.jpeg?auto=compress&cs=tinysrgb&w=400"),
           const SizedBox(height: 25),
-          _buildHotelImage("https://images.pexels.com/photos/342800/pexels-photo-342800.jpeg?auto=compress&cs=tinysrgb&w=400"),
+          _buildHotelImage(
+              "https://images.pexels.com/photos/342800/pexels-photo-342800.jpeg?auto=compress&cs=tinysrgb&w=400"),
           const SizedBox(height: 20),
-          _builResterImage("https://images.pexels.com/photos/2097090/pexels-photo-2097090.jpeg?auto=compress&cs=tinysrgb&w=400"),
+          _buildResterImage(
+              "https://images.pexels.com/photos/2097090/pexels-photo-2097090.jpeg?auto=compress&cs=tinysrgb&w=400"),
           const SizedBox(height: 20),
           _buildSectionTitle("Popular Places"),
           const SizedBox(height: 5),
@@ -137,7 +141,7 @@ class _HomePageState extends State<HomePage> {
             searchText = value;
           });
         },
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           hintText: "Search tours, hotels, restaurants...",
           prefixIcon: Icon(Icons.search, color: Colors.grey),
           suffixIcon: Icon(Icons.filter_list, color: Colors.blueAccent),
@@ -149,14 +153,21 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // for food order
+// for food order
   Widget _buildAdsImage(String imageUrl) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 15),
-      height: 150,
+      height: 250,
       decoration: BoxDecoration(
-        color: Colors.grey,
-        borderRadius: BorderRadius.circular(15),
+        color: Colors.grey.shade300,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          ),
+        ],
         image: DecorationImage(
           fit: BoxFit.cover,
           image: NetworkImage(imageUrl),
@@ -164,29 +175,60 @@ class _HomePageState extends State<HomePage> {
       ),
       child: Stack(
         children: [
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.black.withOpacity(0.5),
+                    Colors.transparent,
+                  ],
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                ),
+              ),
+            ),
+          ),
           Positioned(
-            bottom: 10,
-            right: 10,
-            child: ElevatedButton(
-              onPressed: () {
+            bottom: 20,
+            right: 20,
+            child: GestureDetector(
+              onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const FoodMenuPage()),
                 );
               },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blueAccent,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                decoration: BoxDecoration(
+                  color: Colors.redAccent,
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.redAccent.withOpacity(0.5),
+                      blurRadius: 10,
+                      offset: const Offset(0, 5),
+                    ),
+                  ],
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                elevation: 5,
-              ),
-              child: const Text(
-                'About Food',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 25, vertical: 12),
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.fastfood, size: 18, color: Colors.white),
+                    SizedBox(width: 8),
+                    Text(
+                      'About Food',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -196,61 +238,36 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // for tour
+// for tour
   Widget _buildTourImage(String imageUrl) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 15),
-      height: 150,
-      decoration: BoxDecoration(
-        color: Colors.grey,
-        borderRadius: BorderRadius.circular(15),
-        image: DecorationImage(
-          fit: BoxFit.cover,
-          image: NetworkImage(imageUrl),
-        ),
-      ),
-      child: Stack(
-        children: [
-          Positioned(
-            bottom: 10,
-            right: 10,
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const TourMenuPage()),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blueAccent,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                elevation: 5,
-              ),
-              child: const Text(
-                'About Tours',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+    return _buildCommonImage(imageUrl, 'About Tours', const TourMenuPage());
   }
 
-  // for hotel
+// for hotel
   Widget _buildHotelImage(String imageUrl) {
+    return _buildCommonImage(imageUrl, 'About Hotel', const HotelPage());
+  }
+
+// for rester
+  Widget _buildResterImage(String imageUrl) {
+    return _buildCommonImage(imageUrl, 'About Rester', const ResterPage());
+  }
+
+// Common widget for tour, hotel, and rester
+  Widget _buildCommonImage(String imageUrl, String buttonText, Widget page) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 15),
-      height: 150,
+      height: 250,
       decoration: BoxDecoration(
         color: Colors.grey,
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          ),
+        ],
         image: DecorationImage(
           fit: BoxFit.cover,
           image: NetworkImage(imageUrl),
@@ -258,76 +275,63 @@ class _HomePageState extends State<HomePage> {
       ),
       child: Stack(
         children: [
-          Positioned(
-            bottom: 10,
-            right: 10,
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const HotelPage()),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blueAccent,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                elevation: 5,
-              ),
-              child: const Text(
-                'About Hotel',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.black.withOpacity(0.5),
+                    Colors.transparent,
+                  ],
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
                 ),
               ),
             ),
           ),
-        ],
-      ),
-    );
-  }
-
-  // for rester
-  Widget _builResterImage(String imageUrl) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 15),
-      height: 150,
-      decoration: BoxDecoration(
-        color: Colors.grey,
-        borderRadius: BorderRadius.circular(15),
-        image: DecorationImage(
-          fit: BoxFit.cover,
-          image: NetworkImage(imageUrl),
-        ),
-      ),
-      child: Stack(
-        children: [
           Positioned(
-            bottom: 10,
-            right: 10,
-            child: ElevatedButton(
-              onPressed: () {
+            bottom: 20,
+            right: 20,
+            child: GestureDetector(
+              onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ResterPage()),
+                  MaterialPageRoute(builder: (context) => page),
                 );
               },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blueAccent,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                decoration: BoxDecoration(
+                  color: Colors.redAccent,
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.redAccent.withOpacity(0.5),
+                      blurRadius: 10,
+                      offset: const Offset(0, 5),
+                    ),
+                  ],
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                elevation: 5,
-              ),
-              child: const Text(
-                'About Rester',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 25, vertical: 12),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.info,
+                        size: 18,
+                        color: Colors
+                            .white), // You can customize the icon for each section
+                    const SizedBox(width: 8),
+                    Text(
+                      buttonText,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -343,40 +347,41 @@ class _HomePageState extends State<HomePage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          _buildCategoryButton("Food", () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const FoodMenuPage()),
-            );
-          }),
-          _buildCategoryButton("Hotels", () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const HotelPage()),
-            );
-          }),
-          _buildCategoryButton("Tours", () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const TourMenuPage()),
-            );
-          }),
+          _buildCategoryItem("Restaurants", Icons.restaurant, selectedCategory),
+          _buildCategoryItem("Tours", Icons.map, selectedCategory),
+          _buildCategoryItem("Accomodations", Icons.hotel, selectedCategory),
         ],
       ),
     );
   }
 
-  Widget _buildCategoryButton(String title, VoidCallback onPressed) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.blueAccent,
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        shape: RoundedRectangleBorder(
+  Widget _buildCategoryItem(String title, IconData icon, bool isSelected) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          selectedCategory = !selectedCategory;
+        });
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 18),
+        decoration: BoxDecoration(
+          color: isSelected ? Colors.blueAccent : Colors.grey[200],
           borderRadius: BorderRadius.circular(12),
         ),
+        child: Column(
+          children: [
+            Icon(icon, color: isSelected ? Colors.white : Colors.grey[800]),
+            const SizedBox(height: 8),
+            Text(
+              title,
+              style: TextStyle(
+                color: isSelected ? Colors.white : Colors.grey[800],
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
       ),
-      child: Text(title, style: const TextStyle(fontSize: 16)),
     );
   }
 
@@ -385,61 +390,264 @@ class _HomePageState extends State<HomePage> {
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Text(
         title,
-        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        style: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }
 
   Widget _buildPopulars() {
+    // Sample data for demonstration
+    List<Map<String, dynamic>> popularPlaces = [
+      {
+        'imageUrl':
+            'https://images.pexels.com/photos/338504/pexels-photo-338504.jpeg?auto=compress&cs=tinysrgb&w=600',
+        'name': 'Grand Canyon',
+        'rating': 4.8,
+        'description': 'A magnificent natural wonder.'
+      },
+      {
+        'imageUrl':
+            'https://images.pexels.com/photos/261102/pexels-photo-261102.jpeg?auto=compress&cs=tinysrgb&w=600',
+        'name': 'Eiffel Tower',
+        'rating': 4.7,
+        'description': 'Iconic iron lattice tower in Paris.'
+      },
+      {
+        'imageUrl':
+            'https://images.pexels.com/photos/2869215/pexels-photo-2869215.jpeg?auto=compress&cs=tinysrgb&w=600',
+        'name': 'Grand Canyon',
+        'rating': 4.8,
+        'description': 'A magnificent natural wonder.'
+      },
+      {
+        'imageUrl':
+            'https://images.pexels.com/photos/2507010/pexels-photo-2507010.jpeg?auto=compress&cs=tinysrgb&w=600',
+        'name': 'Eiffel Tower',
+        'rating': 4.7,
+        'description': 'Iconic iron lattice tower in Paris.'
+      },
+      // Add more places as needed
+    ];
+
     return SizedBox(
-      height: 150,
-      child: ListView(
+      height: 200,
+      child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        children: List.generate(5, (index) {
-          return Card(
-            margin: const EdgeInsets.symmetric(horizontal: 5),
-            child: SizedBox(
-              width: 100,
+        itemCount: popularPlaces.length,
+        itemBuilder: (context, index) {
+          return _buildPopularItem(
+            popularPlaces[index]['imageUrl'],
+            popularPlaces[index]['name'],
+            popularPlaces[index]['rating'],
+            popularPlaces[index]['description'],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildPopularItem(
+      String imageUrl, String name, double rating, String description) {
+    return Container(
+      margin: const EdgeInsets.only(left: 15),
+      width: 150,
+      decoration: BoxDecoration(
+        color: Colors.grey[200],
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: Stack(
+          children: [
+            // Background image
+            Image.network(
+              imageUrl,
+              width: 150,
+              height: 200,
+              fit: BoxFit.cover,
+            ),
+            // Overlay for better text visibility
+            Positioned.fill(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.5),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+            // Column for place details
+            Positioned(
+              bottom: 10,
+              left: 10,
+              right: 10,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Icon(Icons.place, size: 40, color: Colors.blueAccent),
-                  Text("Place ${index + 1}"),
+                  Text(
+                    name,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Row(
+                    children: [
+                      const Icon(Icons.star, size: 16, color: Colors.yellow),
+                      const SizedBox(width: 2),
+                      Text(
+                        rating.toString(),
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    description,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: Colors.white,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ],
               ),
             ),
-          );
-        }),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildFeatured() {
+    // You can replace this with your list of featured hotels
     return SizedBox(
-      height: 150,
-      child: ListView(
+      height: 200,
+      child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        children: List.generate(5, (index) {
-          return Card(
-            margin: const EdgeInsets.symmetric(horizontal: 5),
-            child: SizedBox(
-              width: 100,
+        itemCount: 5,
+        itemBuilder: (context, index) {
+          return _buildFeaturedItem(
+            'https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg?auto=compress&cs=tinysrgb&w=600',
+            'Luxury Hotel',
+            4.5,
+            'New York, NY',
+            '\$200 per night',
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildFeaturedItem(String imageUrl, String hotelName, double rating,
+      String location, String price) {
+    return Container(
+      margin: const EdgeInsets.only(left: 15),
+      width: 150,
+      decoration: BoxDecoration(
+        color: Colors.grey[200],
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: Stack(
+          children: [
+            // Background image
+            Image.network(
+              imageUrl,
+              width: 150,
+              height: 200,
+              fit: BoxFit.cover,
+            ),
+            // Overlay to improve text visibility
+            Positioned.fill(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.5),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+            // Column for hotel details
+            Positioned(
+              bottom: 10,
+              left: 10,
+              right: 10,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Icon(Icons.hotel, size: 40, color: Colors.blueAccent),
-                  Text("Hotel ${index + 1}"),
+                  Text(
+                    hotelName,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Row(
+                    children: [
+                      const Icon(Icons.star, size: 16, color: Colors.yellow),
+                      const SizedBox(width: 2),
+                      Text(
+                        rating.toString(),
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    location,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    price,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.greenAccent,
+                    ),
+                  ),
                 ],
               ),
             ),
-          );
-        }),
+          ],
+        ),
       ),
     );
   }
 
   Future<void> _refreshContent() async {
-    // Implement your refresh logic here
-    await Future.delayed(const Duration(seconds: 1));
+    // Simulate a delay for the refresh
+    await Future.delayed(const Duration(seconds: 2));
   }
 }
