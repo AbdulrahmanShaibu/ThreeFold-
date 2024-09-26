@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 // ignore: unused_import
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+//Altas
 void main() {
   runApp(const MyApp());
 }
@@ -104,7 +105,7 @@ class _HomePageState extends State<HomePage> {
           ),
           const SizedBox(height: 25),
           _buildCategories(),
-           const SizedBox(height: 10),
+          const SizedBox(height: 10),
           _buildSearch(),
           const SizedBox(height: 25),
           _buildAdsImage(
