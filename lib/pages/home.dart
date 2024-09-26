@@ -73,7 +73,7 @@ class _HomePageState extends State<HomePage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            "Zanzibar Tour App",
+            "Zanzibar Tour",
             style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.bold,
