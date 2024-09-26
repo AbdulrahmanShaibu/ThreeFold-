@@ -1,6 +1,6 @@
-# alhijra
+# Zanzibar Tourist App
 
-A new Flutter project.
+The project for tourists in Zanzibar.
 
 ## Getting Started
 
